@@ -24,11 +24,11 @@ const shareTech = Share_Tech_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Neon Snake - Play on Base',
-  description: 'Classic Snake game reimagined with neon cyberpunk aesthetics. Play on Base blockchain.',
+  title: 'Neon Snake - Play Now',
+  description: 'Classic Snake game reimagined with neon cyberpunk aesthetics. Play Now on Base!',
   openGraph: {
-    title: 'Neon Snake',
-    description: 'Classic Snake game reimagined with neon cyberpunk aesthetics',
+    title: 'Neon Snake - Play Now',
+    description: 'Classic Snake game reimagined with neon cyberpunk aesthetics. Play Now!',
     url: 'https://neon-snake-indol.vercel.app',
     siteName: 'Neon Snake',
     images: [
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
         url: 'https://neon-snake-indol.vercel.app/hero-image.png',
         width: 1200,
         height: 630,
-        alt: 'Neon Snake Game',
+        alt: 'Neon Snake - Play Now',
       },
     ],
     locale: 'en_US',
@@ -44,8 +44,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Neon Snake',
-    description: 'Classic Snake game reimagined with neon cyberpunk aesthetics',
+    title: 'Neon Snake - Play Now',
+    description: 'Classic Snake game reimagined with neon cyberpunk aesthetics. Play Now!',
     images: ['https://neon-snake-indol.vercel.app/hero-image.png'],
   },
 };
@@ -121,21 +121,22 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         
-        {/* Open Graph / Facebook */}
+        {/* Open Graph / Facebook - для правильного preview з кнопкою */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://neon-snake-indol.vercel.app" />
-        <meta property="og:title" content="Neon Snake" />
-        <meta property="og:description" content="Classic Snake game reimagined with neon cyberpunk aesthetics" />
+        <meta property="og:title" content="Neon Snake - Play Now" />
+        <meta property="og:description" content="Classic Snake game reimagined with neon cyberpunk aesthetics. Play Now!" />
         <meta property="og:image" content="https://neon-snake-indol.vercel.app/hero-image.png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="Neon Snake - Classic Snake Game" />
+        <meta property="og:image:alt" content="Neon Snake - Play Now" />
+        <meta property="og:site_name" content="Neon Snake" />
         
-        {/* Twitter */}
+        {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content="https://neon-snake-indol.vercel.app" />
-        <meta name="twitter:title" content="Neon Snake" />
-        <meta name="twitter:description" content="Classic Snake game with neon cyberpunk aesthetics" />
+        <meta name="twitter:title" content="Neon Snake - Play Now" />
+        <meta name="twitter:description" content="Classic Snake game reimagined with neon cyberpunk aesthetics. Play Now!" />
         <meta name="twitter:image" content="https://neon-snake-indol.vercel.app/hero-image.png" />
         
         {/* Farcaster Mini App meta tags - для правильного відкриття як Mini App */}
@@ -144,6 +145,7 @@ export default function RootLayout({
         
         {/* Додаткові теги для Base App */}
         <meta name="base:miniapp" content="true" />
+        
         
         <link rel="icon" href="/icon.png" type="image/png" />
         <link rel="apple-touch-icon" href="/icon.png" />
