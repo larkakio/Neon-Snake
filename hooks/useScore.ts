@@ -2,7 +2,8 @@
 
 import { useState, useCallback } from 'react';
 import { getHighScore, setHighScore } from '@/lib/storage';
-import { calculateScore, GAME_CONFIG } from '@/lib/game/constants';
+import { GAME_CONFIG } from '@/lib/game/constants';
+import { calculateScore } from '@/lib/game/utils';
 
 export function useScore() {
   const [score, setScore] = useState(0);
