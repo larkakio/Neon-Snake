@@ -7,7 +7,11 @@ import { calculateScore } from '@/lib/game/utils';
 
 export function useScore() {
   const [score, setScore] = useState(0);
-  const [highScore, setHighScoreState] = useState(getHighScore());
+  const [highScore, setHighScoreState] = useState(() => {
+    // Initialize only on client side
+    if (typeof window === 'undefined') return 0;
+    return getHighScore();
+  });
   const [foodsEaten, setFoodsEaten] = useState(0);
 
   const addFood = useCallback((speedLevel: number) => {

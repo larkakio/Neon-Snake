@@ -4,6 +4,8 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useGame } from '@/context/GameContext';
 
+export const dynamic = 'force-dynamic';
+
 export default function GamePage() {
   const router = useRouter();
   const { state, startGame, resetGame } = useGame();

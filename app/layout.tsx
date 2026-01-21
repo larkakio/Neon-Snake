@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Orbitron, Share_Tech_Mono } from 'next/font/google'
 import './globals.css'
+import { Providers } from '@/components/Providers'
 
 const orbitron = Orbitron({
   subsets: ['latin'],
@@ -71,7 +72,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${orbitron.variable} ${shareTech.variable}`}>
       <body className={`${orbitron.className} antialiased bg-bg-darker text-white`}>
-        {children}
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   )

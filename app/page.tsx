@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import { useGame } from '@/context/GameContext';
 import { useFarcasterSDK } from '@/hooks/useFarcasterSDK';
 
+export const dynamic = 'force-dynamic';
+
 export default function HomePage() {
   const router = useRouter();
   const { highScore, startGame } = useGame();
