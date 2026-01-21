@@ -1,0 +1,162 @@
+import type { Metadata } from 'next';
+import { Orbitron, Share_Tech_Mono } from 'next/font/google';
+import './globals.css';
+import { GameContextProvider } from '@/context/GameContext';
+import { FarcasterSDKInit } from '@/components/FarcasterSDKInit';
+import { BottomNavigation } from '@/components/layout/BottomNavigation';
+import { ThemeProvider } from '@/components/ThemeProvider';
+
+const orbitron = Orbitron({
+  subsets: ['latin'],
+  variable: '--font-orbitron',
+  display: 'swap',
+  fallback: ['Arial', 'sans-serif'],
+  adjustFontFallback: false,
+});
+
+const shareTech = Share_Tech_Mono({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-share-tech',
+  display: 'swap',
+  fallback: ['Courier New', 'monospace'],
+  adjustFontFallback: false,
+});
+
+export const metadata: Metadata = {
+  title: 'Neon Snake - Play on Base',
+  description: 'Classic Snake game reimagined with neon cyberpunk aesthetics. Play on Base blockchain.',
+  openGraph: {
+    title: 'Neon Snake',
+    description: 'Classic Snake game reimagined with neon cyberpunk aesthetics',
+    url: 'https://neon-snake-indol.vercel.app',
+    siteName: 'Neon Snake',
+    images: [
+      {
+        url: 'https://neon-snake-indol.vercel.app/hero-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Neon Snake Game',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Neon Snake',
+    description: 'Classic Snake game reimagined with neon cyberpunk aesthetics',
+    images: ['https://neon-snake-indol.vercel.app/hero-image.png'],
+  },
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <head>
+        {/* Farcaster SDK - Call ready() as early as possible */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                function callReady() {
+                  if (window.farcaster?.actions?.ready) {
+                    try {
+                      window.farcaster.actions.ready();
+                      console.log('✅ Farcaster SDK ready() called (inline script)');
+                    } catch (e) {
+                      console.error('Error calling ready():', e);
+                    }
+                  } else if (window.farcaster?.ready) {
+                    try {
+                      window.farcaster.ready();
+                      console.log('✅ Farcaster SDK ready() called (legacy, inline script)');
+                    } catch (e) {
+                      console.error('Error calling ready():', e);
+                    }
+                  }
+                }
+                
+                // Try immediately
+                callReady();
+                
+                // Try when DOM is ready
+                if (document.readyState === 'loading') {
+                  document.addEventListener('DOMContentLoaded', callReady);
+                } else {
+                  callReady();
+                }
+                
+                // Also try on window load
+                window.addEventListener('load', callReady);
+                
+                // Poll for SDK if not available
+                let attempts = 0;
+                const maxAttempts = 50;
+                const pollInterval = setInterval(function() {
+                  attempts++;
+                  callReady();
+                  if (attempts >= maxAttempts) {
+                    clearInterval(pollInterval);
+                  }
+                }, 100);
+                
+                // Prevent external browser redirect - stay in Mini App
+                if (window.location !== window.parent.location) {
+                  // We're in an iframe (Mini App context)
+                  console.log('✅ Running in Mini App context');
+                }
+              })();
+            `,
+          }}
+        />
+        <meta name="base:app_id" content="697094ad5f24b57cc50d32b7" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+        <meta name="theme-color" content="#0A0E27" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://neon-snake-indol.vercel.app" />
+        <meta property="og:title" content="Neon Snake" />
+        <meta property="og:description" content="Classic Snake game reimagined with neon cyberpunk aesthetics" />
+        <meta property="og:image" content="https://neon-snake-indol.vercel.app/hero-image.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Neon Snake - Classic Snake Game" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://neon-snake-indol.vercel.app" />
+        <meta name="twitter:title" content="Neon Snake" />
+        <meta name="twitter:description" content="Classic Snake game with neon cyberpunk aesthetics" />
+        <meta name="twitter:image" content="https://neon-snake-indol.vercel.app/hero-image.png" />
+        
+        {/* Farcaster Mini App meta tags - для правильного відкриття як Mini App */}
+        <meta name="farcaster:miniapp" content="true" />
+        <meta name="farcaster:miniapp:button" content="Play Now" />
+        
+        {/* Додаткові теги для Base App */}
+        <meta name="base:miniapp" content="true" />
+        
+        <link rel="icon" href="/icon.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/icon.png" />
+      </head>
+      <body className={`${orbitron.variable} ${shareTech.variable} bg-bg-dark overflow-hidden`}>
+        <FarcasterSDKInit />
+        <ThemeProvider>
+          <GameContextProvider>
+            {children}
+            <BottomNavigation />
+          </GameContextProvider>
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}

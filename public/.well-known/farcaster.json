@@ -1,0 +1,28 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjEyNzg1ODEsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHhkOTI2MDVEOUU5NjM5RWY2OWZFODBlZEM2ZDBDQTFhOWZlNGI1NDE5In0",
+    "payload": "eyJkb21haW4iOiJuZW9uLXNuYWtlLWluZG9sLnZlcmNlbC5hcHAifQ",
+    "signature": "Yf3RWIzhgOwNEcelEJ6y8d+FhEY7bzgYkE0Y3xofQY84rC6YnmHiNWUTAwzjqF1h8YBrCfNGJ7RaQU+TBR1EXBw="
+  },
+  "miniapp": {
+    "version": "1",
+    "name": "Neon Snake",
+    "subtitle": "Classic arcade with neon style",
+    "description": "Eat food, grow longer, and beat your high score in this classic arcade game with stunning neon visuals",
+    "iconUrl": "https://neon-snake-indol.vercel.app/icon.png",
+    "homeUrl": "https://neon-snake-indol.vercel.app/",
+    "imageUrl": "https://neon-snake-indol.vercel.app/hero-image.png",
+    "splashImageUrl": "https://neon-snake-indol.vercel.app/icon.png",
+    "splashBackgroundColor": "#0A0E27",
+    "canonicalDomain": "neon-snake-indol.vercel.app",
+    "ogImageUrl": "https://neon-snake-indol.vercel.app/hero-image.png",
+    "ogTitle": "Neon Snake",
+    "ogDescription": "Classic Snake game with neon cyberpunk aesthetics",
+    "castShareUrl": "https://neon-snake-indol.vercel.app/",
+    "buttonTitle": "Play Now",
+    "buttonUrl": "https://neon-snake-indol.vercel.app/",
+    "primaryCategory": "games",
+    "tags": ["snake", "arcade", "retro", "classic", "neon"],
+    "requiredChains": ["eip155:8453"]
+  }
+}
