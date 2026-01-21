@@ -112,23 +112,54 @@ export default function RootLayout({
                 
                 // Poll for SDK if not available - more aggressive polling
                 let attempts = 0;
-                const maxAttempts = 100;
+                const maxAttempts = 200; // Increased attempts
+                let success = false;
                 const pollInterval = setInterval(function() {
                   attempts++;
                   if (callReady()) {
+                    success = true;
                     clearInterval(pollInterval);
+                    console.log('✅ SDK ready() called successfully after', attempts, 'attempts');
                     return;
                   }
                   if (attempts >= maxAttempts) {
                     clearInterval(pollInterval);
-                    console.warn('⚠️ Farcaster SDK not found after', maxAttempts, 'attempts');
+                    if (!success) {
+                      console.warn('⚠️ Farcaster SDK not found after', maxAttempts, 'attempts');
+                      // Try one more time after a delay
+                      setTimeout(callReady, 1000);
+                    }
                   }
-                }, 50); // Check every 50ms for faster detection
+                }, 25); // Check every 25ms for even faster detection
                 
-                // Prevent external browser redirect - stay in Mini App
-                if (window.location !== window.parent.location) {
-                  // We're in an iframe (Mini App context)
+                // Detect Mini App context and prevent external browser redirect
+                const isInIframe = window.self !== window.top;
+                const isMiniAppContext = isInIframe || 
+                  window.location.href.includes('farcaster') || 
+                  window.location.href.includes('warpcast') ||
+                  window.navigator.userAgent.includes('Farcaster') ||
+                  window.farcaster !== undefined;
+                
+                if (isMiniAppContext) {
                   console.log('✅ Running in Mini App context');
+                  
+                  // Prevent navigation to external browser
+                  window.addEventListener('beforeunload', function(e) {
+                    if (!isInIframe) {
+                      e.preventDefault();
+                      e.returnValue = '';
+                    }
+                  });
+                  
+                  // Override window.open to stay in Mini App
+                  const originalOpen = window.open;
+                  window.open = function(url?: string | URL, target?: string, features?: string) {
+                    if (window.farcaster?.openUrl && url) {
+                      window.farcaster.openUrl(url.toString());
+                      return null;
+                    }
+                    return originalOpen.call(window, url, target, features);
+                  };
                 }
               })();
             `,
@@ -154,10 +185,12 @@ export default function RootLayout({
         
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://neon-snake-indol.vercel.app" />
+        <meta name="twitter:url" content="https://neon-snake-indol.vercel.app/" />
         <meta name="twitter:title" content="Neon Snake - Play Now" />
         <meta name="twitter:description" content="Classic Snake game reimagined with neon cyberpunk aesthetics. Play Now!" />
         <meta name="twitter:image" content="https://neon-snake-indol.vercel.app/hero-image.png" />
+        <meta name="twitter:image:src" content="https://neon-snake-indol.vercel.app/hero-image.png" />
+        <meta name="twitter:image:alt" content="Neon Snake - Play Now" />
         
         {/* Farcaster Mini App meta tags - для правильного відкриття як Mini App */}
         <meta name="farcaster:miniapp" content="true" />

@@ -44,9 +44,9 @@ export function FarcasterSDKInit() {
       return;
     }
 
-    // Try with delays in case SDK loads asynchronously
+    // Try with delays in case SDK loads asynchronously - more aggressive
     const timeouts: NodeJS.Timeout[] = [];
-    const delays = [50, 100, 200, 500, 1000, 2000];
+    const delays = [10, 25, 50, 100, 200, 500, 1000, 2000, 3000];
     
     delays.forEach((delay) => {
       timeouts.push(
@@ -58,6 +58,19 @@ export function FarcasterSDKInit() {
         }, delay)
       );
     });
+    
+    // Also try continuously for first 5 seconds
+    const continuousInterval = setInterval(() => {
+      if (initSDK()) {
+        clearInterval(continuousInterval);
+        timeouts.forEach(clearTimeout);
+      }
+    }, 50);
+    
+    // Stop continuous checking after 5 seconds
+    setTimeout(() => {
+      clearInterval(continuousInterval);
+    }, 5000);
 
     // Also listen for SDK injection with MutationObserver
     const observer = new MutationObserver(() => {
