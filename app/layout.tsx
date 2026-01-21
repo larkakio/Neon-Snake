@@ -64,21 +64,37 @@ export default function RootLayout({
             __html: `
               (function() {
                 function callReady() {
+                  // Try new API first
                   if (window.farcaster?.actions?.ready) {
                     try {
                       window.farcaster.actions.ready();
                       console.log('✅ Farcaster SDK ready() called (inline script)');
-                    } catch (e) {
-                      console.error('Error calling ready():', e);
-                    }
-                  } else if (window.farcaster?.ready) {
-                    try {
-                      window.farcaster.ready();
-                      console.log('✅ Farcaster SDK ready() called (legacy, inline script)');
+                      return true;
                     } catch (e) {
                       console.error('Error calling ready():', e);
                     }
                   }
+                  // Try legacy API
+                  if (window.farcaster?.ready) {
+                    try {
+                      window.farcaster.ready();
+                      console.log('✅ Farcaster SDK ready() called (legacy, inline script)');
+                      return true;
+                    } catch (e) {
+                      console.error('Error calling ready():', e);
+                    }
+                  }
+                  // Try alternative locations
+                  if (window.sdk?.actions?.ready) {
+                    try {
+                      window.sdk.actions.ready();
+                      console.log('✅ Farcaster SDK ready() called (alternative location)');
+                      return true;
+                    } catch (e) {
+                      console.error('Error calling ready():', e);
+                    }
+                  }
+                  return false;
                 }
                 
                 // Try immediately
@@ -94,16 +110,20 @@ export default function RootLayout({
                 // Also try on window load
                 window.addEventListener('load', callReady);
                 
-                // Poll for SDK if not available
+                // Poll for SDK if not available - more aggressive polling
                 let attempts = 0;
-                const maxAttempts = 50;
+                const maxAttempts = 100;
                 const pollInterval = setInterval(function() {
                   attempts++;
-                  callReady();
+                  if (callReady()) {
+                    clearInterval(pollInterval);
+                    return;
+                  }
                   if (attempts >= maxAttempts) {
                     clearInterval(pollInterval);
+                    console.warn('⚠️ Farcaster SDK not found after', maxAttempts, 'attempts');
                   }
-                }, 100);
+                }, 50); // Check every 50ms for faster detection
                 
                 // Prevent external browser redirect - stay in Mini App
                 if (window.location !== window.parent.location) {
@@ -145,6 +165,11 @@ export default function RootLayout({
         
         {/* Додаткові теги для Base App */}
         <meta name="base:miniapp" content="true" />
+        
+        {/* Додаткові meta теги для embed preview - важливо для "Preview available" */}
+        <meta name="description" content="Classic Snake game reimagined with neon cyberpunk aesthetics. Play Now on Base!" />
+        <meta name="application-name" content="Neon Snake" />
+        <meta name="apple-mobile-web-app-title" content="Neon Snake" />
         
         
         <link rel="icon" href="/icon.png" type="image/png" />
