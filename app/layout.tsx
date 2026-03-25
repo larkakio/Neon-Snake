@@ -52,13 +52,10 @@ export const metadata: Metadata = {
 
   other: {
     // Farcaster Frame v2 (vNext) meta tags
-    'fc:frame': 'vNext',
-    'fc:frame:image': 'https://neon-snake-indol.vercel.app/hero-image.png',
-    'fc:frame:image:aspect_ratio': '1.91:1',
-    'fc:frame:button:1': 'Play Now',
-    'fc:frame:button:1:action': 'link',
-    'fc:frame:button:1:target': 'https://neon-snake-indol.vercel.app',
-    
+
+
+
+
     // Base App ID
     'base:app_id': '697094ad5f24b57cc50d32b7',
   },
