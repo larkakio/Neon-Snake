@@ -15,10 +15,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
         <GameContextProvider>
-        <WrongNetworkBanner />
-        {children}
-        <DailyCheckIn />
-      </GameContextProvider>
+          <WrongNetworkBanner />
+          {children}
+          <DailyCheckIn />
+        </GameContextProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );
