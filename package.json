@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "ox": "^0.14.10",
     "@base-org/account": "^1.0.0",
     "@tanstack/react-query": "^5.62.0",
     "framer-motion": "11.2.10",
